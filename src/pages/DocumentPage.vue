@@ -505,6 +505,61 @@
             </div>
           </div>
         </div>
+
+        <!-- CLOSING ENGINE ANALYTICS -->
+        <div
+          v-if="closingEngineSessions.length > 0"
+          class="px-8 pb-8 space-y-5"
+        >
+          <!-- Section header -->
+          <div class="flex items-center gap-3">
+            <div
+              class="flex-1 h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent"
+            ></div>
+            <div
+              class="flex items-center gap-2 px-3 py-1.5 bg-gray-900/60 border border-gray-800/50 rounded-full"
+            >
+              <div
+                class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"
+              ></div>
+              <span
+                class="text-xs font-semibold text-gray-400 uppercase tracking-widest"
+                >Closing Engine</span
+              >
+            </div>
+            <div
+              class="flex-1 h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent"
+            ></div>
+          </div>
+
+          <!-- Live presence badge -->
+          <div
+            v-if="liveViewers.length > 0"
+            class="flex items-center gap-3 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl px-4 py-3"
+          >
+            <div
+              class="w-3 h-3 rounded-full bg-emerald-400 animate-ping shrink-0"
+            ></div>
+            <div>
+              <p class="text-sm font-semibold text-emerald-400">
+                🔴 LIVE — 客戶正在閱讀！
+              </p>
+              <p class="text-xs text-emerald-600">
+                {{ liveViewers.length }} 位讀者當前在線 —
+                <span v-for="v in liveViewers" :key="v.viewerId" class="mr-2">
+                  {{ v.clientName || v.linkId }} · P{{ v.currentPage }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <!-- The 3 Widget Grid -->
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
+            <VelocityTachometer :sessions="closingEngineSessions" />
+            <DecisionPathMap :sessions="closingEngineSessions" />
+            <ContentFuelGauge :sessions="closingEngineSessions" />
+          </div>
+        </div>
       </template>
     </main>
 
@@ -519,7 +574,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth.js";
 import { useDocuments } from "../composables/useDocuments.js";
@@ -527,6 +582,11 @@ import { useTrackingLinks } from "../composables/useTrackingLinks.js";
 import { useTrackingSessions } from "../composables/useScores.js";
 import CreateLinkModal from "../components/CreateLinkModal.vue";
 import ScoreRing from "../components/ScoreRing.vue";
+import VelocityTachometer from "../components/VelocityTachometer.vue";
+import DecisionPathMap from "../components/DecisionPathMap.vue";
+import ContentFuelGauge from "../components/ContentFuelGauge.vue";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { db } from "../services/firebase.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -545,6 +605,7 @@ const {
   calculateDealScore,
   getScoreLabel,
   getScoreColor,
+  sessions,
 } = useTrackingSessions();
 
 const getLinkScore = (link) => {
@@ -616,18 +677,58 @@ const onLinkCreated = () => {
   fetchLinksForDocument(docId.value);
 };
 
+// ── Closing Engine: sessions for this document's links ───────────
+const closingEngineSessions = computed(() => {
+  if (!links.value.length) return [];
+  const linkIds = new Set(links.value.map((l) => l.id));
+  // Get all sessions matching any link of this doc
+  return sessions.value.filter((s) => linkIds.has(s.linkId));
+});
+
+// ── Live Presence via realtime_pings listener ────────────────────
+const liveViewers = ref([]);
+let unsubscribePings = null;
+
+function subscribeToLivePings(linkIds) {
+  if (!linkIds.length) return;
+  // Listen to pings updated in last 2 minutes
+  try {
+    const q = query(
+      collection(db, "realtime_pings"),
+      where("linkId", "in", linkIds.slice(0, 10)), // Firestore "in" limit = 10
+    );
+    unsubscribePings = onSnapshot(q, (snap) => {
+      const twoMinAgo = Date.now() - 2 * 60 * 1000;
+      liveViewers.value = snap.docs
+        .map((d) => d.data())
+        .filter((d) => {
+          const ts = d.updatedAt?.toDate ? d.updatedAt.toDate().getTime() : 0;
+          return ts > twoMinAgo;
+        });
+    });
+  } catch (_) {
+    // Silently skip if index not ready
+  }
+}
+
 onMounted(async () => {
   try {
     currentDoc.value = await getDocument(docId.value);
     if (currentDoc.value) {
       await fetchLinksForDocument(docId.value);
-      // Fetch sessions for scoring
       if (user.value) {
         await fetchSessionsByOwner(user.value.uid);
       }
+      // Start live presence listener
+      const linkIds = links.value.map((l) => l.id);
+      subscribeToLivePings(linkIds);
     }
   } finally {
     loadingDoc.value = false;
   }
+});
+
+onBeforeUnmount(() => {
+  if (unsubscribePings) unsubscribePings();
 });
 </script>
