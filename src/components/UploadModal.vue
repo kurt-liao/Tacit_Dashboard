@@ -9,16 +9,18 @@
 
       <!-- Modal -->
       <div
-        class="relative w-full max-w-lg bg-gray-900 border border-gray-800/60 rounded-2xl shadow-2xl shadow-black/30"
+        class="relative w-full max-w-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800/60 rounded-2xl shadow-xl dark:shadow-2xl shadow-black/5 dark:shadow-black/30 transition-all duration-300"
       >
         <!-- Header -->
         <div
-          class="flex items-center justify-between px-6 py-4 border-b border-gray-800/50"
+          class="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800/50"
         >
-          <h3 class="text-base font-semibold text-white">上傳 PDF</h3>
+          <h3 class="text-base font-semibold text-gray-900 dark:text-white">
+            上傳 PDF
+          </h3>
           <button
             @click="$emit('close')"
-            class="p-1 text-gray-500 hover:text-gray-300 rounded-lg hover:bg-gray-800/50 transition-colors"
+            class="p-1 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors"
           >
             <svg
               class="w-5 h-5"
@@ -50,7 +52,7 @@
                 ? 'border-brand-500/50 bg-brand-500/5'
                 : selectedFile
                   ? 'border-emerald-500/30 bg-emerald-500/5'
-                  : 'border-gray-700/50 hover:border-gray-600/50 hover:bg-gray-800/20'
+                  : 'border-gray-200 dark:border-gray-700/50 hover:border-brand-500/50 dark:hover:border-gray-600/50 bg-gray-50 dark:bg-transparent hover:bg-brand-50/50 dark:hover:bg-gray-800/20'
             "
           >
             <input
@@ -63,7 +65,7 @@
 
             <template v-if="!selectedFile">
               <div
-                class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gray-800/50 border border-gray-700/50 mb-3"
+                class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 mb-3 shadow-sm dark:shadow-none"
               >
                 <svg
                   class="w-6 h-6 text-gray-500"
@@ -79,10 +81,12 @@
                   />
                 </svg>
               </div>
-              <p class="text-sm text-gray-400 mb-1">
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">
                 拖曳 PDF 檔案至此或點擊選取
               </p>
-              <p class="text-xs text-gray-600">僅支援 .pdf 格式</p>
+              <p class="text-xs text-gray-400 dark:text-gray-600">
+                僅支援 .pdf 格式
+              </p>
             </template>
 
             <template v-else>
@@ -103,7 +107,9 @@
                   />
                 </svg>
               </div>
-              <p class="text-sm text-emerald-300 font-medium">
+              <p
+                class="text-sm text-emerald-600 dark:text-emerald-300 font-medium"
+              >
                 {{ selectedFile.name }}
               </p>
               <p class="text-xs text-gray-500 mt-0.5">
@@ -116,7 +122,7 @@
           <div>
             <label
               for="docName"
-              class="block text-sm font-medium text-gray-400 mb-1.5"
+              class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5"
               >文件名稱</label
             >
             <input
@@ -125,18 +131,20 @@
               type="text"
               required
               placeholder="例如：Q1 產品報告"
-              class="w-full px-4 py-2.5 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
+              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200 shadow-sm dark:shadow-none"
             />
           </div>
 
           <!-- Upload progress -->
           <div v-if="isUploading" class="space-y-2">
             <div
-              class="flex items-center justify-between text-xs text-gray-400"
+              class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400"
             >
               <span>上傳中…</span>
             </div>
-            <div class="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden">
+            <div
+              class="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden"
+            >
               <div
                 class="h-full bg-brand-500 rounded-full transition-all duration-500 animate-pulse"
                 style="width: 60%"
@@ -168,11 +176,11 @@
 
         <!-- Footer -->
         <div
-          class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-800/50"
+          class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 dark:border-gray-800/50"
         >
           <button
             @click="$emit('close')"
-            class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-gray-300 rounded-xl hover:bg-gray-800/50 transition-colors"
+            class="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors"
           >
             取消
           </button>

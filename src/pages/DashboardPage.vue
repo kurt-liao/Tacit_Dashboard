@@ -1,17 +1,21 @@
 <template>
-  <div class="min-h-screen flex">
+  <div
+    class="min-h-screen flex bg-gray-50 dark:bg-gray-950 transition-colors duration-300"
+  >
     <!-- Sidebar -->
     <aside
-      class="w-64 bg-gray-900/50 border-r border-gray-800/50 flex flex-col shrink-0"
+      class="w-64 bg-white dark:bg-gray-900/50 border-r border-gray-200 dark:border-gray-800/50 flex flex-col shrink-0 transition-colors duration-300"
     >
       <!-- Brand -->
-      <div class="p-5 border-b border-gray-800/50">
+      <div
+        class="p-5 border-b border-gray-100 dark:border-gray-800/50 flex items-center justify-between"
+      >
         <div class="flex items-center gap-3">
           <div
             class="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center"
           >
             <svg
-              class="w-5 h-5 text-brand-400"
+              class="w-5 h-5 text-brand-500 dark:text-brand-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -25,10 +29,13 @@
             </svg>
           </div>
           <div>
-            <h1 class="text-sm font-semibold text-white">Qulox</h1>
+            <h1 class="text-sm font-semibold text-gray-900 dark:text-white">
+              Qulox
+            </h1>
             <p class="text-xs text-gray-500">Dashboard</p>
           </div>
         </div>
+        <ThemeToggle />
       </div>
 
       <!-- Nav -->
@@ -38,8 +45,8 @@
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150"
           :class="
             $route.name === 'Dashboard'
-              ? 'bg-brand-500/10 text-brand-400'
-              : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+              ? 'bg-brand-500/10 text-brand-600 dark:text-brand-400 whitespace-nowrap'
+              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800/50'
           "
         >
           <svg
@@ -62,8 +69,8 @@
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150"
           :class="
             $route.name === 'Clients'
-              ? 'bg-brand-500/10 text-brand-400'
-              : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+              ? 'bg-brand-500/10 text-brand-600 dark:text-brand-400'
+              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800/50'
           "
         >
           <svg
@@ -84,17 +91,20 @@
       </nav>
 
       <!-- User section -->
-      <div class="p-3 border-t border-gray-800/50">
+      <div class="p-3 border-t border-gray-100 dark:border-gray-800/50">
         <div class="flex items-center gap-3 px-3 py-2">
           <div
-            class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center"
+            class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center shrink-0"
           >
-            <span class="text-xs font-medium text-gray-300">{{
-              userInitial
-            }}</span>
+            <span
+              class="text-xs font-medium text-gray-600 dark:text-gray-300"
+              >{{ userInitial }}</span
+            >
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-sm text-gray-300 truncate">{{ user?.email }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-300 truncate">
+              {{ user?.email }}
+            </p>
           </div>
           <button
             @click="handleLogout"
@@ -123,10 +133,12 @@
     <main class="flex-1 overflow-auto">
       <!-- Top bar -->
       <header
-        class="sticky top-0 z-10 bg-gray-950/80 backdrop-blur-lg border-b border-gray-800/50 px-8 py-4 flex items-center justify-between"
+        class="sticky top-0 z-10 bg-white/80 dark:bg-gray-950/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800/50 px-8 py-4 flex items-center justify-between transition-colors duration-300"
       >
         <div>
-          <h2 class="text-lg font-semibold text-white">文件管理</h2>
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+            文件管理
+          </h2>
           <p class="text-sm text-gray-500">管理你的 PDF 文件與客戶追蹤連結</p>
         </div>
         <button
@@ -179,7 +191,7 @@
           <!-- Stats Overview -->
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <div
-              class="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-5"
+              class="bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800/50 shadow-sm dark:shadow-none rounded-2xl p-5 transition-colors duration-300"
             >
               <div class="flex items-center gap-3">
                 <div
@@ -205,7 +217,7 @@
                   </svg>
                 </div>
                 <div>
-                  <p class="text-2xl font-bold text-white">
+                  <p class="text-2xl font-bold text-gray-900 dark:text-white">
                     {{ stats.totalSessions }}
                   </p>
                   <p class="text-xs text-gray-500">閱覽次數</p>
@@ -213,7 +225,7 @@
               </div>
             </div>
             <div
-              class="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-5"
+              class="bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800/50 shadow-sm dark:shadow-none rounded-2xl p-5 transition-colors duration-300"
             >
               <div class="flex items-center gap-3">
                 <div
@@ -234,7 +246,7 @@
                   </svg>
                 </div>
                 <div>
-                  <p class="text-2xl font-bold text-white">
+                  <p class="text-2xl font-bold text-gray-900 dark:text-white">
                     {{ stats.totalDwellFormatted }}
                   </p>
                   <p class="text-xs text-gray-500">總閱讀時間</p>
@@ -242,7 +254,7 @@
               </div>
             </div>
             <div
-              class="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-5"
+              class="bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800/50 shadow-sm dark:shadow-none rounded-2xl p-5 transition-colors duration-300"
             >
               <div class="flex items-center gap-3">
                 <div
@@ -251,7 +263,7 @@
                   <span class="text-base">🔥</span>
                 </div>
                 <div>
-                  <p class="text-2xl font-bold text-white">
+                  <p class="text-2xl font-bold text-gray-900 dark:text-white">
                     {{ stats.hotLeads }}
                   </p>
                   <p class="text-xs text-gray-500">HOT 客戶</p>
@@ -259,7 +271,7 @@
               </div>
             </div>
             <div
-              class="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-5"
+              class="bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800/50 shadow-sm dark:shadow-none rounded-2xl p-5 transition-colors duration-300"
             >
               <div class="flex items-center gap-3">
                 <div
@@ -268,7 +280,7 @@
                   <span class="text-base">🟠</span>
                 </div>
                 <div>
-                  <p class="text-2xl font-bold text-white">
+                  <p class="text-2xl font-bold text-gray-900 dark:text-white">
                     {{ stats.warmLeads }}
                   </p>
                   <p class="text-xs text-gray-500">WARM 客戶</p>
@@ -283,7 +295,7 @@
               v-for="doc in documents"
               :key="doc.id"
               :to="`/dashboard/documents/${doc.id}`"
-              class="group bg-gray-900/40 border border-gray-800/50 rounded-2xl p-5 hover:border-brand-500/30 hover:bg-gray-900/60 transition-all duration-200"
+              class="group bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800/50 shadow-sm dark:shadow-none rounded-2xl p-5 hover:border-brand-500/30 hover:bg-gray-50 dark:hover:bg-gray-900/60 transition-all duration-200"
             >
               <!-- Top row: PDF info + score -->
               <div class="flex items-start gap-4">
@@ -306,7 +318,7 @@
                 </div>
                 <div class="flex-1 min-w-0">
                   <h3
-                    class="text-sm font-semibold text-white group-hover:text-brand-400 transition-colors truncate"
+                    class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors truncate"
                   >
                     {{ doc.name }}
                   </h3>
@@ -376,7 +388,7 @@
         <!-- Empty state -->
         <div v-else class="text-center py-20">
           <div
-            class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-800/50 border border-gray-700/50 mb-4"
+            class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 mb-4"
           >
             <svg
               class="w-8 h-8 text-gray-600"
@@ -392,7 +404,9 @@
               />
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-300 mb-1">尚無文件</h3>
+          <h3 class="text-lg font-medium text-gray-600 dark:text-gray-300 mb-1">
+            尚無文件
+          </h3>
           <p class="text-sm text-gray-500 mb-6">
             上傳你的第一份 PDF 文件開始使用
           </p>
@@ -437,6 +451,7 @@ import { useTrackingLinks } from "../composables/useTrackingLinks.js";
 import { useTrackingSessions } from "../composables/useScores.js";
 import UploadModal from "../components/UploadModal.vue";
 import ScoreRing from "../components/ScoreRing.vue";
+import ThemeToggle from "../components/ThemeToggle.vue";
 
 const router = useRouter();
 const { user, logout } = useAuth();

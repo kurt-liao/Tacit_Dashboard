@@ -1,16 +1,20 @@
 <template>
-  <div class="min-h-screen flex">
+  <div
+    class="min-h-screen flex bg-gray-50 dark:bg-gray-950 transition-colors duration-300"
+  >
     <!-- Sidebar -->
     <aside
-      class="w-64 bg-gray-900/50 border-r border-gray-800/50 flex flex-col shrink-0"
+      class="w-64 bg-white dark:bg-gray-900/50 border-r border-gray-200 dark:border-gray-800/50 flex flex-col shrink-0 transition-colors duration-300"
     >
-      <div class="p-5 border-b border-gray-800/50">
+      <div
+        class="p-5 border-b border-gray-100 dark:border-gray-800/50 flex items-center justify-between"
+      >
         <div class="flex items-center gap-3">
           <div
             class="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center"
           >
             <svg
-              class="w-5 h-5 text-brand-400"
+              class="w-5 h-5 text-brand-500 dark:text-brand-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -24,10 +28,13 @@
             </svg>
           </div>
           <div>
-            <h1 class="text-sm font-semibold text-white">Qulox</h1>
+            <h1 class="text-sm font-semibold text-gray-900 dark:text-white">
+              Qulox
+            </h1>
             <p class="text-xs text-gray-500">Dashboard</p>
           </div>
         </div>
+        <ThemeToggle />
       </div>
       <nav class="flex-1 p-3 space-y-1">
         <router-link
@@ -35,8 +42,8 @@
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150"
           :class="
             $route.name === 'Dashboard'
-              ? 'bg-brand-500/10 text-brand-400'
-              : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+              ? 'bg-brand-500/10 text-brand-600 dark:text-brand-400 whitespace-nowrap'
+              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800/50'
           "
         >
           <svg
@@ -59,8 +66,8 @@
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150"
           :class="
             $route.name === 'Clients'
-              ? 'bg-brand-500/10 text-brand-400'
-              : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+              ? 'bg-brand-500/10 text-brand-600 dark:text-brand-400'
+              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800/50'
           "
         >
           <svg
@@ -79,17 +86,20 @@
           客戶管理
         </router-link>
       </nav>
-      <div class="p-3 border-t border-gray-800/50">
+      <div class="p-3 border-t border-gray-100 dark:border-gray-800/50">
         <div class="flex items-center gap-3 px-3 py-2">
           <div
-            class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center"
+            class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center shrink-0"
           >
-            <span class="text-xs font-medium text-gray-300">{{
-              userInitial
-            }}</span>
+            <span
+              class="text-xs font-medium text-gray-600 dark:text-gray-300"
+              >{{ userInitial }}</span
+            >
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-sm text-gray-300 truncate">{{ user?.email }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-300 truncate">
+              {{ user?.email }}
+            </p>
           </div>
           <button
             @click="handleLogout"
@@ -117,10 +127,12 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
       <header
-        class="sticky top-0 z-10 bg-gray-950/80 backdrop-blur-lg border-b border-gray-800/50 px-8 py-4 flex items-center justify-between"
+        class="sticky top-0 z-10 bg-white/80 dark:bg-gray-950/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800/50 px-8 py-4 flex items-center justify-between transition-colors duration-300"
       >
         <div>
-          <h2 class="text-lg font-semibold text-white">客戶管理</h2>
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+            客戶管理
+          </h2>
           <p class="text-sm text-gray-500">管理你的客戶資訊</p>
         </div>
         <button
@@ -165,7 +177,7 @@
               v-model="searchQuery"
               type="text"
               placeholder="搜尋客戶名稱、公司、Email…"
-              class="w-full pl-10 pr-4 py-2.5 bg-gray-900/40 border border-gray-800/50 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200 text-sm"
+              class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 shadow-sm dark:shadow-none transition-all duration-200 text-sm"
             />
           </div>
         </div>
@@ -199,7 +211,7 @@
           class="text-center py-20"
         >
           <div
-            class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-800/50 border border-gray-700/50 mb-4"
+            class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 mb-4"
           >
             <svg
               class="w-8 h-8 text-gray-600"
@@ -215,7 +227,9 @@
               />
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-300 mb-1">尚無客戶</h3>
+          <h3 class="text-lg font-medium text-gray-600 dark:text-gray-300 mb-1">
+            尚無客戶
+          </h3>
           <p class="text-sm text-gray-500 mb-6">新增你的第一位客戶開始管理</p>
           <button
             @click="openCreate"
@@ -251,11 +265,11 @@
         <!-- Client table -->
         <div
           v-else
-          class="bg-gray-900/40 border border-gray-800/50 rounded-2xl overflow-hidden"
+          class="bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800/50 shadow-sm dark:shadow-none rounded-2xl overflow-hidden transition-colors duration-300"
         >
           <table class="w-full">
             <thead>
-              <tr class="border-b border-gray-800/50">
+              <tr class="border-b border-gray-100 dark:border-gray-800/50">
                 <th
                   class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3"
                 >
@@ -288,11 +302,11 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-800/40">
+            <tbody class="divide-y divide-gray-50 dark:divide-gray-800/40">
               <tr
                 v-for="client in filteredClients"
                 :key="client.id"
-                class="hover:bg-gray-800/20 transition-colors"
+                class="hover:bg-gray-50 dark:hover:bg-gray-800/20 transition-colors"
               >
                 <td class="px-6 py-4">
                   <div class="flex items-center gap-3">
@@ -303,9 +317,10 @@
                         client.name?.charAt(0)?.toUpperCase() || "?"
                       }}</span>
                     </div>
-                    <span class="text-sm text-white font-medium">{{
-                      client.name
-                    }}</span>
+                    <span
+                      class="text-sm text-gray-900 dark:text-white font-medium"
+                      >{{ client.name }}</span
+                    >
                   </div>
                 </td>
                 <td class="px-6 py-4 text-center">
@@ -420,6 +435,7 @@ import { useClients } from "../composables/useClients.js";
 import { useTrackingSessions } from "../composables/useScores.js";
 import ClientModal from "../components/ClientModal.vue";
 import ScoreRing from "../components/ScoreRing.vue";
+import ThemeToggle from "../components/ThemeToggle.vue";
 
 const router = useRouter();
 const { user, logout } = useAuth();

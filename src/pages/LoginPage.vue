@@ -1,17 +1,22 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center px-4">
+  <div
+    class="min-h-screen flex items-center justify-center px-4 bg-gray-50 dark:bg-gray-950 transition-colors duration-300"
+  >
     <!-- Ambient background glow -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
       <div
-        class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/5 rounded-full blur-3xl"
+        class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/10 dark:bg-brand-500/5 rounded-full blur-3xl"
       ></div>
       <div
-        class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"
+        class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/10 dark:bg-purple-500/5 rounded-full blur-3xl"
       ></div>
     </div>
 
     <!-- Login Card -->
-    <div class="relative w-full max-w-md">
+    <div class="relative w-full max-w-sm">
+      <div class="absolute -top-12 right-0">
+        <ThemeToggle />
+      </div>
       <!-- Logo / Brand -->
       <div class="text-center mb-8">
         <div
@@ -31,20 +36,22 @@
             />
           </svg>
         </div>
-        <h1 class="text-2xl font-semibold text-white">Qulox</h1>
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+          Qulox
+        </h1>
         <p class="text-sm text-gray-500 mt-1">Dashboard 管理後台</p>
       </div>
 
       <!-- Card -->
       <div
-        class="bg-gray-900/60 backdrop-blur-xl border border-gray-800/60 rounded-2xl p-8 shadow-2xl shadow-black/20"
+        class="bg-white dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200 dark:border-gray-800/60 rounded-2xl p-8 shadow-xl dark:shadow-2xl shadow-black/5 dark:shadow-black/20 transition-all duration-300"
       >
         <form @submit.prevent="handleLogin" class="space-y-5">
           <!-- Email -->
           <div>
             <label
               for="email"
-              class="block text-sm font-medium text-gray-400 mb-1.5"
+              class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5"
               >帳號</label
             >
             <input
@@ -54,7 +61,7 @@
               required
               autocomplete="email"
               placeholder="your@email.com"
-              class="w-full px-4 py-2.5 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
+              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
             />
           </div>
 
@@ -62,7 +69,7 @@
           <div>
             <label
               for="password"
-              class="block text-sm font-medium text-gray-400 mb-1.5"
+              class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5"
               >密碼</label
             >
             <input
@@ -72,7 +79,7 @@
               required
               autocomplete="current-password"
               placeholder="••••••••"
-              class="w-full px-4 py-2.5 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
+              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
             />
           </div>
 
@@ -139,6 +146,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth.js";
+import ThemeToggle from "../components/ThemeToggle.vue";
 
 const router = useRouter();
 const { login } = useAuth();

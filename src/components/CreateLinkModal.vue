@@ -402,6 +402,7 @@ const {
   clients: availableClients,
   isLoading: clientsLoading,
   fetchClients,
+  createClient,
 } = useClients();
 
 const dropdownRef = ref(null);
@@ -478,11 +479,21 @@ const handleCreate = async () => {
   isCreating.value = true;
 
   try {
-    await createLink(
-      props.documentId,
-      user.value.uid,
-      resolvedClientName.value,
-    );
+    let finalClientName = resolvedClientName.value;
+
+    // If in manual mode, auto-create a client record for persistence in Client Management
+    if (manualMode.value && manualClientName.value.trim()) {
+      const name = manualClientName.value.trim();
+      const existing = availableClients.value.find(
+        (c) => c.name?.toLowerCase() === name.toLowerCase(),
+      );
+
+      if (!existing) {
+        await createClient({ name }, user.value.uid);
+      }
+    }
+
+    await createLink(props.documentId, user.value.uid, finalClientName);
     emit("created");
   } catch (err) {
     errorMsg.value = err.message;

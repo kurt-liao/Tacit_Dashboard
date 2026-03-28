@@ -7,17 +7,17 @@
       <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
 
       <div
-        class="relative w-full max-w-md bg-gray-900 border border-gray-800/60 rounded-2xl shadow-2xl shadow-black/30"
+        class="relative w-full max-w-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800/60 rounded-2xl shadow-xl dark:shadow-2xl shadow-black/5 dark:shadow-black/30 transition-all duration-300"
       >
         <div
-          class="flex items-center justify-between px-6 py-4 border-b border-gray-800/50"
+          class="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800/50"
         >
-          <h3 class="text-base font-semibold text-white">
+          <h3 class="text-base font-semibold text-gray-900 dark:text-white">
             {{ isEditing ? "編輯客戶" : "新增客戶" }}
           </h3>
           <button
             @click="$emit('close')"
-            class="p-1 text-gray-500 hover:text-gray-300 rounded-lg hover:bg-gray-800/50 transition-colors"
+            class="p-1 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors"
           >
             <svg
               class="w-5 h-5"
@@ -39,7 +39,7 @@
           <div>
             <label
               for="clientName"
-              class="block text-sm font-medium text-gray-400 mb-1.5"
+              class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5"
               >客戶名稱 *</label
             >
             <input
@@ -49,14 +49,14 @@
               type="text"
               required
               placeholder="例如：ABC 科技有限公司"
-              class="w-full px-4 py-2.5 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
+              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
             />
           </div>
 
           <div>
             <label
               for="clientCompany"
-              class="block text-sm font-medium text-gray-400 mb-1.5"
+              class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5"
               >公司名稱</label
             >
             <input
@@ -64,14 +64,14 @@
               v-model="form.company"
               type="text"
               placeholder="公司全名"
-              class="w-full px-4 py-2.5 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
+              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
             />
           </div>
 
           <div>
             <label
               for="clientEmail"
-              class="block text-sm font-medium text-gray-400 mb-1.5"
+              class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5"
               >Email</label
             >
             <input
@@ -79,14 +79,14 @@
               v-model="form.email"
               type="email"
               placeholder="client@example.com"
-              class="w-full px-4 py-2.5 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
+              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
             />
           </div>
 
           <div>
             <label
               for="clientPhone"
-              class="block text-sm font-medium text-gray-400 mb-1.5"
+              class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5"
               >電話</label
             >
             <input
@@ -94,14 +94,14 @@
               v-model="form.phone"
               type="text"
               placeholder="0912-345-678"
-              class="w-full px-4 py-2.5 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
+              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200"
             />
           </div>
 
           <div>
             <label
               for="clientNotes"
-              class="block text-sm font-medium text-gray-400 mb-1.5"
+              class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5"
               >備註</label
             >
             <textarea
@@ -109,7 +109,7 @@
               v-model="form.notes"
               rows="3"
               placeholder="關於此客戶的備註…"
-              class="w-full px-4 py-2.5 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200 resize-none"
+              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500/50 transition-all duration-200 resize-none"
             ></textarea>
           </div>
 
@@ -137,7 +137,7 @@
             <button
               type="button"
               @click="$emit('close')"
-              class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-gray-300 rounded-xl hover:bg-gray-800/50 transition-colors"
+              class="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors"
             >
               取消
             </button>

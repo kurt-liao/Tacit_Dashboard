@@ -162,42 +162,42 @@ export function useTrackingSessions() {
   const getScoreColor = (score) => {
     if (score > 80)
       return {
-        text: "text-rose-400",
+        text: "text-rose-600 dark:text-rose-400",
         bg: "bg-rose-500/10",
         border: "border-rose-500/20",
-        ring: "stroke-rose-400",
+        ring: "stroke-rose-500 dark:stroke-rose-400",
         gradient: "from-rose-500 to-orange-500",
       };
     if (score > 50)
       return {
-        text: "text-amber-400",
+        text: "text-amber-600 dark:text-amber-400",
         bg: "bg-amber-500/10",
         border: "border-amber-500/20",
-        ring: "stroke-amber-400",
+        ring: "stroke-amber-500 dark:stroke-amber-400",
         gradient: "from-amber-500 to-yellow-500",
       };
     if (score > 20)
       return {
-        text: "text-sky-400",
+        text: "text-sky-600 dark:text-sky-400",
         bg: "bg-sky-500/10",
         border: "border-sky-500/20",
-        ring: "stroke-sky-400",
+        ring: "stroke-sky-500 dark:stroke-sky-400",
         gradient: "from-sky-500 to-cyan-500",
       };
     if (score > 0)
       return {
-        text: "text-blue-400",
+        text: "text-blue-600 dark:text-blue-400",
         bg: "bg-blue-500/10",
         border: "border-blue-500/20",
-        ring: "stroke-blue-400",
+        ring: "stroke-blue-500 dark:stroke-blue-400",
         gradient: "from-blue-500 to-indigo-500",
       };
     return {
-      text: "text-gray-600",
-      bg: "bg-gray-800/30",
-      border: "border-gray-700/30",
-      ring: "stroke-gray-700",
-      gradient: "from-gray-600 to-gray-700",
+      text: "text-gray-400 dark:text-gray-600",
+      bg: "bg-gray-100 dark:bg-gray-800/30",
+      border: "border-gray-200 dark:border-gray-700/30",
+      ring: "stroke-gray-300 dark:stroke-gray-700",
+      gradient: "from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700",
     };
   };
 

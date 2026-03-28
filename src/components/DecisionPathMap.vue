@@ -86,11 +86,15 @@ const pathData = computed(() => {
 </script>
 
 <template>
-  <div class="bg-gray-900/60 border border-gray-800/50 rounded-2xl p-6">
+  <div
+    class="bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800/50 rounded-2xl p-6 transition-colors duration-300 shadow-sm dark:shadow-none"
+  >
     <!-- Header -->
     <div class="flex items-center justify-between mb-5">
       <div>
-        <h3 class="text-sm font-semibold text-white">Decision Path Map</h3>
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
+          Decision Path Map
+        </h3>
         <p class="text-xs text-gray-500 mt-0.5">決策導航圖 · Page Journey</p>
       </div>
       <span
@@ -142,7 +146,7 @@ const pathData = computed(() => {
             <!-- Arrow connector -->
             <div v-if="idx > 0" class="shrink-0 px-0.5">
               <svg
-                class="w-4 h-4 text-gray-700"
+                class="w-4 h-4 text-gray-300 dark:text-gray-700"
                 fill="none"
                 viewBox="0 0 24 24"
               >
@@ -161,8 +165,8 @@ const pathData = computed(() => {
                 class="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold transition-all"
                 :class="
                   pathData.hesitationPoints.includes(step.page)
-                    ? 'bg-amber-500/20 border border-amber-500/40 text-amber-300'
-                    : 'bg-gray-800 border border-gray-700 text-gray-300'
+                    ? 'bg-amber-500/20 border border-amber-500/40 text-amber-600 dark:text-amber-300'
+                    : 'bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300'
                 "
               >
                 P{{ step.page }}
@@ -221,7 +225,9 @@ const pathData = computed(() => {
             <span class="text-xs font-mono text-gray-500 w-6 shrink-0"
               >P{{ page }}</span
             >
-            <div class="flex-1 bg-gray-800/60 rounded-full h-2 overflow-hidden">
+            <div
+              class="flex-1 bg-gray-100 dark:bg-gray-800/60 rounded-full h-2 overflow-hidden"
+            >
               <div
                 class="h-full rounded-full transition-all duration-700"
                 :class="
@@ -241,9 +247,13 @@ const pathData = computed(() => {
       </div>
 
       <!-- Summary stats -->
-      <div class="mt-4 grid grid-cols-3 gap-2 pt-4 border-t border-gray-800/50">
+      <div
+        class="mt-4 grid grid-cols-3 gap-2 pt-4 border-t border-gray-100 dark:border-gray-800/50"
+      >
         <div class="text-center">
-          <p class="text-base font-bold text-white font-mono">
+          <p
+            class="text-base font-bold text-gray-900 dark:text-white font-mono"
+          >
             {{ pathData.totalMoves }}
           </p>
           <p class="text-[10px] text-gray-500">總頁面跳轉</p>

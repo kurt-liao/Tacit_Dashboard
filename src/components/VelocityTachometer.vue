@@ -90,11 +90,11 @@ const RADIUS = 80;
 const CX = 100;
 const CY = 100;
 
-function polarToXY(angleDeg) {
+function polarToXY(angleDeg, r = RADIUS) {
   const rad = ((angleDeg - 180) * Math.PI) / 180;
   return {
-    x: CX + RADIUS * Math.cos(rad),
-    y: CY + RADIUS * Math.sin(rad),
+    x: CX + r * Math.cos(rad),
+    y: CY + r * Math.sin(rad),
   };
 }
 
@@ -111,7 +111,7 @@ const needleAngle = computed(() => {
 });
 
 const needleEnd = computed(() => {
-  return polarToXY(needleAngle.value);
+  return polarToXY(needleAngle.value, RADIUS - 5);
 });
 
 const redlineStartAngle = 135; // 75% of 180°
@@ -121,17 +121,19 @@ const redlineEnd = computed(() => polarToXY(180));
 
 <template>
   <div
-    class="bg-gray-900/60 border rounded-2xl p-6 transition-all duration-500"
+    class="bg-white dark:bg-gray-900/60 border rounded-2xl p-6 transition-all duration-500 shadow-sm dark:shadow-none"
     :class="
       velocityData.isRedline
         ? 'border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.15)]'
-        : 'border-gray-800/50'
+        : 'border-gray-200 dark:border-gray-800/50'
     "
   >
     <!-- Header -->
     <div class="flex items-center justify-between mb-4">
       <div>
-        <h3 class="text-sm font-semibold text-white">Velocity Tachometer</h3>
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
+          Velocity Tachometer
+        </h3>
         <p class="text-xs text-gray-500 mt-0.5">成交轉速表 · Open Frequency</p>
       </div>
       <span
@@ -153,15 +155,30 @@ const redlineEnd = computed(() => polarToXY(180));
     <!-- SVG Gauge -->
     <div class="flex justify-center mb-4">
       <svg
-        viewBox="0 0 200 110"
+        viewBox="0 0 200 140"
         class="w-full max-w-[220px]"
         overflow="visible"
       >
         <!-- Background arc track -->
+        <circle
+          cx="100"
+          cy="100"
+          :r="RADIUS"
+          fill="none"
+          class="text-gray-100 dark:text-gray-800"
+          stroke="currentColor"
+          stroke-width="16"
+          stroke-linecap="round"
+          stroke-dasharray="251.2"
+          stroke-dashoffset="251.2"
+          transform="rotate(180, 100, 100)"
+        />
+        <!-- Using a simpler path for cross-browser consistency if needed, but the current arcPath is calculated. Let's stick to it but use currentColor -->
         <path
           :d="arcPath"
           fill="none"
-          stroke="#1f2937"
+          stroke="currentColor"
+          class="text-gray-100 dark:text-gray-800"
           stroke-width="16"
           stroke-linecap="round"
         />
@@ -233,12 +250,12 @@ const redlineEnd = computed(() => polarToXY(180));
 
         <!-- REDLINE text marker -->
         <text
-          :x="redlineStart.x - 6"
-          :y="redlineStart.y - 8"
+          :x="redlineStart.x + 8"
+          :y="redlineStart.y - 12"
           fill="rgba(239,68,68,0.7)"
           font-size="6"
           font-family="monospace"
-          text-anchor="middle"
+          text-anchor="start"
         >
           REDLINE
         </text>
@@ -249,21 +266,30 @@ const redlineEnd = computed(() => polarToXY(180));
           :y1="CY"
           :x2="needleEnd.x"
           :y2="needleEnd.y"
-          stroke="white"
+          stroke="currentColor"
+          class="text-gray-800 dark:text-white"
           stroke-width="2"
           stroke-linecap="round"
           style="transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1)"
         />
         <!-- Needle base -->
-        <circle :cx="CX" :cy="CY" r="5" fill="white" opacity="0.9" />
+        <circle
+          :cx="CX"
+          :cy="CY"
+          r="5"
+          fill="currentColor"
+          class="text-gray-800 dark:text-white"
+          opacity="0.9"
+        />
 
         <!-- Speed value -->
         <text
           :x="CX"
-          y="78"
+          y="118"
           text-anchor="middle"
-          fill="white"
-          font-size="22"
+          fill="currentColor"
+          class="text-gray-900 dark:text-white"
+          font-size="24"
           font-weight="bold"
           font-family="monospace"
         >
@@ -271,11 +297,13 @@ const redlineEnd = computed(() => polarToXY(180));
         </text>
         <text
           :x="CX"
-          y="88"
+          y="130"
           text-anchor="middle"
           fill="#6b7280"
-          font-size="7"
+          font-size="8"
           font-family="sans-serif"
+          font-weight="bold"
+          letter-spacing="0.1em"
         >
           VELOCITY SCORE
         </text>
@@ -284,22 +312,28 @@ const redlineEnd = computed(() => polarToXY(180));
 
     <!-- Stats Grid -->
     <div class="grid grid-cols-3 gap-3">
-      <div class="bg-gray-800/40 rounded-xl p-3 text-center">
-        <p class="text-lg font-bold text-white font-mono">
+      <div
+        class="bg-gray-50 dark:bg-gray-800/40 rounded-xl p-3 text-center transition-colors"
+      >
+        <p class="text-lg font-bold text-gray-900 dark:text-white font-mono">
           {{ velocityData.freq24h }}
         </p>
         <p class="text-[10px] text-gray-500 leading-tight">Opens<br />24h</p>
       </div>
-      <div class="bg-gray-800/40 rounded-xl p-3 text-center">
-        <p class="text-lg font-bold text-white font-mono">
+      <div
+        class="bg-gray-50 dark:bg-gray-800/40 rounded-xl p-3 text-center transition-colors"
+      >
+        <p class="text-lg font-bold text-gray-900 dark:text-white font-mono">
           {{ velocityData.totalRevisits }}
         </p>
         <p class="text-[10px] text-gray-500 leading-tight">
           Total<br />Revisits
         </p>
       </div>
-      <div class="bg-gray-800/40 rounded-xl p-3 text-center">
-        <p class="text-lg font-bold text-white font-mono">
+      <div
+        class="bg-gray-50 dark:bg-gray-800/40 rounded-xl p-3 text-center transition-colors"
+      >
+        <p class="text-lg font-bold text-gray-900 dark:text-white font-mono">
           {{ velocityData.revisitGapFormatted }}
         </p>
         <p class="text-[10px] text-gray-500 leading-tight">Revisit<br />Gap</p>

@@ -80,11 +80,15 @@ function getLevelLabel(relativeScore) {
 </script>
 
 <template>
-  <div class="bg-gray-900/60 border border-gray-800/50 rounded-2xl p-6">
+  <div
+    class="bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800/50 rounded-2xl p-6 transition-colors duration-300 shadow-sm dark:shadow-none"
+  >
     <!-- Header -->
     <div class="flex items-center justify-between mb-5">
       <div>
-        <h3 class="text-sm font-semibold text-white">Content Fuel Gauge</h3>
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
+          Content Fuel Gauge
+        </h3>
         <p class="text-xs text-gray-500 mt-0.5">
           內容燃油表 · Page Engagement ROI
         </p>
@@ -92,7 +96,7 @@ function getLevelLabel(relativeScore) {
       <div v-if="fuelData" class="flex items-center gap-2">
         <div class="text-right">
           <p class="text-xs text-gray-500">ROI Score</p>
-          <p class="text-sm font-bold text-white font-mono">
+          <p class="text-sm font-bold text-gray-900 dark:text-white font-mono">
             {{ fuelData.roiScore }}/100
           </p>
         </div>
@@ -104,7 +108,8 @@ function getLevelLabel(relativeScore) {
               cy="18"
               r="15.9"
               fill="none"
-              stroke="#1f2937"
+              stroke="currentColor"
+              class="text-gray-100 dark:text-gray-800"
               stroke-width="3"
             />
             <circle
@@ -126,7 +131,7 @@ function getLevelLabel(relativeScore) {
             />
           </svg>
           <span
-            class="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-white"
+            class="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-gray-900 dark:text-white"
             style="transform: none"
           >
             {{ fuelData.roiScore }}
@@ -176,19 +181,25 @@ function getLevelLabel(relativeScore) {
         <div class="bg-rose-500/10 border border-rose-500/20 rounded-xl p-3">
           <div class="flex items-center gap-2 mb-1">
             <span class="text-base">🔥</span>
-            <span class="text-xs font-semibold text-rose-400">高參與頁面</span>
+            <span class="text-xs font-semibold text-rose-500 dark:text-rose-400"
+              >高參與頁面</span
+            >
           </div>
-          <p class="text-xl font-bold text-white font-mono">
+          <p class="text-xl font-bold text-gray-900 dark:text-white font-mono">
             {{ fuelData.highEngagement.length }}
           </p>
           <p class="text-[10px] text-gray-500">停留 ≥ 10s</p>
         </div>
-        <div class="bg-gray-800/40 border border-gray-700/30 rounded-xl p-3">
+        <div
+          class="bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700/30 rounded-xl p-3 transition-colors"
+        >
           <div class="flex items-center gap-2 mb-1">
             <span class="text-base">⚡</span>
-            <span class="text-xs font-semibold text-gray-400">快速掃描</span>
+            <span class="text-xs font-semibold text-gray-500 dark:text-gray-400"
+              >快速掃描</span
+            >
           </div>
-          <p class="text-xl font-bold text-white font-mono">
+          <p class="text-xl font-bold text-gray-900 dark:text-white font-mono">
             {{ fuelData.quickScans.length }}
           </p>
           <p class="text-[10px] text-gray-500">停留 &lt; 5s</p>
@@ -217,7 +228,7 @@ function getLevelLabel(relativeScore) {
               >
             </div>
             <div
-              class="flex-1 bg-gray-800/60 rounded-full h-2.5 overflow-hidden"
+              class="flex-1 bg-gray-100 dark:bg-gray-800/60 rounded-full h-2.5 overflow-hidden"
             >
               <div
                 class="h-full rounded-full bg-gradient-to-r transition-all duration-700"

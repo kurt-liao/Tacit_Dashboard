@@ -11,7 +11,7 @@
         :r="radius"
         fill="none"
         stroke="currentColor"
-        class="text-gray-800/40"
+        class="text-gray-100 dark:text-gray-800/40"
         :stroke-width="strokeWidth"
       />
       <!-- Progress circle -->
