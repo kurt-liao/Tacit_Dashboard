@@ -1,4 +1,7 @@
 [config]
-model = "gpt-4o-mini-2024-07-18"
-model_turbo = "gpt-4o-mini-2024-07-18"
-fallback_models = ["gpt-4o-mini-2024-07-18", "gpt-4o-mini"]
+model = "gpt-4o-mini"
+model_turbo = "gpt-4o-mini"
+fallback_models = ["gpt-4o-mini", "gpt-4o-mini"]
+
+[ignore]
+glob = ["*.lock", "dist/*", "vendor/*"]
