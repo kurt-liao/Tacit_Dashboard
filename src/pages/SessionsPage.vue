@@ -11,29 +11,66 @@
       最近的閱讀紀錄，含單次閱讀的 intent score。
     </p>
 
-    <!-- Filter: document select -->
-    <div
-      v-if="documents.length > 0"
-      class="mb-4 flex items-center justify-between gap-4"
-    >
-      <div class="text-xs text-gray-500">
-        目前篩選：
-        <span class="font-medium text-gray-700 dark:text-gray-200">
-          {{ selectedDocumentId === 'all'
-            ? '全部文件'
-            : (documents.find((d) => d.id === selectedDocumentId)?.name || selectedDocumentId)
-          }}
-        </span>
+    <!-- Filter & Sort Bar -->
+    <div class="mb-4 flex flex-wrap items-center gap-3">
+      <!-- Document filter -->
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-gray-500">文件</span>
+        <select
+          v-model="selectedDocumentId"
+          class="text-xs px-2 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        >
+          <option value="all">全部文件</option>
+          <option v-for="doc in documents" :key="doc.id" :value="doc.id">
+            {{ doc.name }}
+          </option>
+        </select>
       </div>
-      <select
-        v-model="selectedDocumentId"
-        class="text-xs px-2 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200"
-      >
-        <option value="all">全部文件</option>
-        <option v-for="doc in documents" :key="doc.id" :value="doc.id">
-          {{ doc.name }}
-        </option>
-      </select>
+
+      <!-- Intent level filter -->
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-gray-500">熱度</span>
+        <select
+          v-model="selectedIntentLevel"
+          class="text-xs px-2 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        >
+          <option value="all">全部</option>
+          <option value="HOT">🔥 HOT</option>
+          <option value="WARM">🟠 WARM</option>
+          <option value="INTERESTED">🟡 INTERESTED</option>
+          <option value="COLD">🔵 COLD</option>
+        </select>
+      </div>
+
+      <!-- Date range filter -->
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-gray-500">時間</span>
+        <select
+          v-model="selectedDateRange"
+          class="text-xs px-2 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        >
+          <option value="all">全部時間</option>
+          <option value="today">今天</option>
+          <option value="week">本週</option>
+          <option value="month">本月</option>
+        </select>
+      </div>
+
+      <!-- Sort -->
+      <div class="flex items-center gap-2 ml-auto">
+        <span class="text-xs text-gray-500">排序</span>
+        <select
+          v-model="sortBy"
+          class="text-xs px-2 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        >
+          <option value="time">最新時間</option>
+          <option value="score">Intent Score 最高</option>
+          <option value="dwell">閱讀時長最長</option>
+        </select>
+      </div>
+
+      <!-- Result count -->
+      <span class="text-xs text-gray-400">{{ sortedSessions.length }} 筆</span>
     </div>
 
     <!-- Summary panel: Today HOT/WARM sessions -->
@@ -163,7 +200,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import AppShell from "../layouts/AppShell.vue";
 import { useAuth } from "../composables/useAuth.js";
@@ -187,6 +224,11 @@ if (user.value?.uid) {
   fetchSessionsByOwner(user.value.uid);
 }
 
+// Filter & sort state
+const selectedIntentLevel = ref("all");
+const selectedDateRange = ref("all");
+const sortBy = ref("time");
+
 const selectedDocumentId = computed({
   get() {
     const id = router.currentRoute.value.query.documentId;
@@ -200,9 +242,50 @@ const selectedDocumentId = computed({
   },
 });
 
+// Date range helper
+function getDateBoundary(range) {
+  const now = new Date();
+  if (range === "today") {
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+  }
+  if (range === "week") {
+    const day = now.getDay(); // 0=Sun
+    const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(now.getFullYear(), now.getMonth(), diff, 0, 0, 0);
+  }
+  if (range === "month") {
+    return new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
+  }
+  return null;
+}
+
 const filteredSessions = computed(() => {
-  if (selectedDocumentId.value === "all") return sessions.value;
-  return sessions.value.filter((s) => s.documentId === selectedDocumentId.value);
+  let result = sessions.value;
+
+  // Document filter
+  if (selectedDocumentId.value !== "all") {
+    result = result.filter((s) => s.documentId === selectedDocumentId.value);
+  }
+
+  // Intent level filter
+  if (selectedIntentLevel.value !== "all") {
+    result = result.filter((s) => s.intentLevel === selectedIntentLevel.value);
+  }
+
+  // Date range filter
+  const boundary = getDateBoundary(selectedDateRange.value);
+  if (boundary) {
+    result = result.filter((s) => {
+      const t = s.endedAt?.toDate?.()
+        ? s.endedAt.toDate()
+        : s.createdAt?.toDate?.()
+          ? s.createdAt.toDate()
+          : null;
+      return t && t >= boundary;
+    });
+  }
+
+  return result;
 });
 
 const todayStats = computed(() => {
@@ -253,6 +336,13 @@ const todayStats = computed(() => {
 
 const sortedSessions = computed(() => {
   return [...filteredSessions.value].sort((a, b) => {
+    if (sortBy.value === "score") {
+      return (b.intentScore || 0) - (a.intentScore || 0);
+    }
+    if (sortBy.value === "dwell") {
+      return (b.totalDwellSecs || 0) - (a.totalDwellSecs || 0);
+    }
+    // default: time
     const aTime = a.endedAt?.toDate?.()
       ? a.endedAt.toDate()
       : a.createdAt?.toDate?.()
